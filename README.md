@@ -1,5 +1,5 @@
 # PyTorch_ONNX_TensorRT
-A tutorial that show how could you build a TensorRT engine from a PyTorch Model with the help of ONNX. Please kindly star this project if it helps you.
+A tutorial that show how could you build a TensorRT engine from a PyTorch Model with the help of ONNX. Please kindly star this project if you feel it helpful.
 
 
 # Environment
