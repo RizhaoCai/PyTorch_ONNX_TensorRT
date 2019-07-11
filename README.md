@@ -49,5 +49,6 @@ For full details, please check the [TensorRT-Installtation Guide](https://docs.n
 Please check the file 'pytorch_onnx_trt.ipynb'
   
 # Contact
-Cai, Rizhao
+Cai, Rizhao  
+
 Email: rizhao.cai@gmail.com
