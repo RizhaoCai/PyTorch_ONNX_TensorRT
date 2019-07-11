@@ -46,5 +46,5 @@ For full details, please check the [TensorRT-Installtation Guide](https://docs.n
 
 
 # Usage
-# Please check the file 'pytorch_onnx_trt.ipynb'
+Please check the file 'pytorch_onnx_trt.ipynb'
   
