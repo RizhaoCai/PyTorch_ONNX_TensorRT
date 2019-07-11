@@ -6,8 +6,8 @@ A tutorial that show how could you build a TensorRT engine from a PyTorch Model 
 0. Ubuntu 16.04 x86_64, CUDA 10.0
 1. Python 3.5
 2. [PyTorch](https://pytorch.org/get-started/locally/) 1.0 
-3. TensorRT 5.0 (If you are using Jetson TX2, TensorRT will be already there if you have installed the jetpack)
-3.1 Download [TensorRT](https://developer.nvidia.com/tensorrt) (You should pick up the right package that matches your environment)
+3. TensorRT 5.0 (If you are using Jetson TX2, TensorRT will be already there if you have installed the jetpack)  
+3.1 Download [TensorRT](https://developer.nvidia.com/tensorrt) (You should pick up the right package that matches your environment)  
 3.2 Debian installation
 ```
   $ sudo dpkg -i nv-tensorrt-repo-ubuntu1x04-cudax.x-trt5.x.x.x-ga-yyyymmdd_1-1_amd64.deb # The downloaeded file
