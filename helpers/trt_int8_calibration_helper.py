@@ -1,4 +1,4 @@
-from tensorrt import legacy
+import tensorrt as trt
 import pycuda.driver as cuda
 import pycuda.autoinit
 import numpy as np
@@ -7,9 +7,9 @@ import ctypes
 ctypes.pythonapi.PyCapsule_GetPointer.restype = ctypes.c_char_p
 ctypes.pythonapi.PyCapsule_GetPointer.argtypes = [ctypes.py_object, ctypes.c_char_p]
 
-class PythonEntropyCalibrator(legacy.infer.EntropyCalibrator):
+class PythonEntropyCalibrator(trt.IInt8EntropyCalibrator):
   def __init__(self, input_layers, stream, cache_file='calibration_cache.bin'):
-    legacy.infer.EntropyCalibrator.__init__(self)       
+    trt.IInt8EntropyCalibrator.__init__(self)       
     self.input_layers = input_layers
     self.stream = stream
     self.d_input = cuda.mem_alloc(self.stream.calibration_data.nbytes)
@@ -47,16 +47,16 @@ class PythonEntropyCalibrator(legacy.infer.EntropyCalibrator):
     
 
 class ImageBatchStream():
-  "It is OK to just feed the data without label"
-  def __init__(self,dataset, transform, batch_size, img_size, max_batches, max_batches=10, ):
+  
+  def __init__(self,dataset, transform, batch_size, img_size, max_batches=10):
+      # It is OK to just feed the data without label"
       self.transform = transform
       self.batch_size = batch_size
-      self.max_batches = 4#len(dataset)
+      self.max_batches = max_batches
       self.dataset = dataset
-      
-      # This is a holder for the calibration
-      #self.calibration_data = np.zeros((batch_size, 3, 800, 250), dtype=np.float32)
-      self.calibration_data = np.zeros((batch_size,)+ img_size, dtype=np.float32)
+        
+      # self.calibration_data = np.zeros((batch_size, 3, 800, 250), dtype=np.float32)
+      self.calibration_data = np.zeros((batch_size,3)+ img_size, dtype=np.float32) # This is a data holder for the calibration
       self.batch = 0
       
        
