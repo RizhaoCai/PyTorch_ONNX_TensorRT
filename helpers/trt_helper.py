@@ -73,8 +73,13 @@ def get_engine(max_batch_size=1, onnx_file_path="", engine_file_path="",\
             #network.mark_output(network.get_layer(network.num_layers-1).get_output(1)) # Riz
             
             engine = builder.build_cuda_engine(network)
-            print("Completed creating Engine")
+            # If errors happend when executing builder.build_cuda_engine(network),
+            # a None-Type object would be returned
+            If engine is None:
+                print('Failed to create the engine')
+                return None   
             
+            print("Completed creating the engine")
             if save_engine:
                 with open(engine_file_path, "wb") as f:
                     f.write(engine.serialize())
