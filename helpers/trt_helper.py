@@ -1,9 +1,10 @@
+import os
 import pycuda.autoinit
 import numpy as np
 import pycuda.driver as cuda
 import tensorrt as trt
 import torch
-
+from .trt_int8_calibration_helper import PythonEntropyCalibrator
 TRT_LOGGER = trt.Logger() # This logger is required to build an engine
 
 
@@ -40,7 +41,7 @@ def allocate_buffers(engine):
     return inputs, outputs, bindings, stream
         
 def get_engine(max_batch_size=1, onnx_file_path="", engine_file_path="",\
-               fp16_mode=False, int8_mode=False, save_engine=False,
+               fp16_mode=False, int8_mode=False, calibration_stream=None, save_engine=False,
               ):
     """Attempts to load a serialized engine if available, otherwise builds a new TensorRT engine and saves it."""
     def build_engine(max_batch_size, save_engine):
@@ -54,10 +55,10 @@ def get_engine(max_batch_size=1, onnx_file_path="", engine_file_path="",\
             #pdb.set_trace()
             builder.fp16_mode = fp16_mode  # Default: False
             builder.int8_mode = int8_mode  # Default: False
-            if int8_mode:
-                # To be updated
-                raise NotImplementedError
-                
+            if int8_mode: 
+                assert calibration_stream, 'Error: a calibration_stream should be provided for int8 mode'
+                builder.int8_calibrator  = PythonEntropyCalibrator(["input"], calibration_stream, 'calibration_cache.bin')
+                print('Int8 mode enabled')
             # Parse model file
             if not os.path.exists(onnx_file_path):
                 quit('ONNX file {} not found'.format(onnx_file_path))
@@ -66,16 +67,16 @@ def get_engine(max_batch_size=1, onnx_file_path="", engine_file_path="",\
             with open(onnx_file_path, 'rb') as model:
                 print('Beginning ONNX file parsing')
                 parser.parse(model.read())
-            print('Completed parsing of ONNX file')
-            print('Building an engine from file {}; this may take a while...'.format(onnx_file_path))
-            #pdb.set_trace()
-            #network.mark_output(network.get_layer(network.num_layers-1).get_output(0)) # Riz   
-            #network.mark_output(network.get_layer(network.num_layers-1).get_output(1)) # Riz
+                assert network.num_layers > 0, 'Failed to parse ONNX model. \
+                            Please check if the ONNX model is compatible '
             
+            print('Completed parsing of ONNX file')
+
+            print('Building an engine from file {}; this may take a while...'.format(onnx_file_path))        
             engine = builder.build_cuda_engine(network)
             # If errors happend when executing builder.build_cuda_engine(network),
             # a None-Type object would be returned
-            If engine is None:
+            if engine is None:
                 print('Failed to create the engine')
                 return None   
             

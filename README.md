@@ -47,8 +47,59 @@ For full details, please check the [TensorRT-Installtation Guide](https://docs.n
 
 # Usage
 Please check the file 'pytorch_onnx_trt.ipynb'
-  
-# Contact
-Cai, Rizhao  
 
+# News:
+Int8 demo updated! Just  
+```python
+python3 trt_int8_demo.py
+```  
+
+You will see output like
+ 
+  >Function forward_onnx called!  
+  >graph(%input : Float(32, 3, 128, 128),  
+        %1 : Float(16, 3, 3, 3),  
+        %2 : Float(16),  
+        %3 : Float(64, 16, 5, 5),  
+        %4 : Float(64),  
+        %5 : Float(10, 64),  
+        %6 : Float(10)):  
+    %7 : Float(32, 16, 126, 126) = onnx::Conv[dilations=[1, 1], group=1, kernel_shape=[3, 3], pads=[0, 0, 0, 0], strides=[1, 1]](%input, %1, %2), scope: Conv2d  
+    %8 : Float(32, 16, 126, 126) = onnx::Relu(%7), scope: ReLU  
+    %9 : Float(32, 16, 124, 124) = onnx::MaxPool[kernel_shape=[3, 3], pads=[0, 0, 0, 0], strides=[1, 1]](%8), scope: MaxPool2d  
+    %10 : Float(32, 64, 120, 120) = onnx::Conv[dilations=[1, 1], group=1,   kernel_shape=[5, 5], pads=[0, 0, 0, 0], strides=[1, 1]](%9, %3, %4), scope: Conv2d  
+    %11 : Float(32, 64, 120, 120) = onnx::Relu(%10), scope: ReLU  
+    %12 : Float(32, 64, 1, 1) = onnx::GlobalAveragePool(%11), scope:   AdaptiveAvgPool2d  
+    %13 : Float(32, 64) = onnx::Flatten[axis=1](%12)  
+    %output : Float(32, 10) = onnx::Gemm[alpha=1, beta=1, transB=1](%13, %5, %6), scope: Linear  
+    return (%output)
+  Int8 mode enabled
+  Loading ONNX file from path model_128.onnx...  
+  Beginning ONNX file parsing  
+  Completed parsing of ONNX file  
+  Building an engine from file model_128.onnx; this may take a while...  
+  Completed creating the engine  
+  Loading ONNX file from path model_128.onnx...  
+  Beginning ONNX file parsing  
+  Completed parsing of ONNX file  
+  Building an engine from file model_128.onnx; this may take a while...  
+  Completed creating the engine  
+  Loading ONNX file from path model_128.onnx...  
+  Beginning ONNX file parsing  
+  Completed parsing of ONNX file  
+  Building an engine from file model_128.onnx; this may take a while...  
+  Completed creating the engine  
+  Toal time used by engine_int8: 0.0009500550794171857  
+  Toal time used by engine_fp16: 0.001466430104649938  
+  Toal time used by engine: 0.002231682623709525  
+
+This output is run by Jetson Xavier.  
+Please be noted that int8 mode is only supported by specific GPU modules, e.g. Jetson Xavier , Tesla P4, etc. 
+
+TensorRT 6 and 7 have been released. Although the tutorial is run with TensorRT 5.0, it should be also compatible with TensorRT 6 and 7.
+
+
+
+# Contact
+Cai, Rizhao    
 Email: rizhao.cai@gmail.com
