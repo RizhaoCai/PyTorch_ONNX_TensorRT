@@ -5,7 +5,6 @@ import torch
 from helpers import trt_helper
 from helpers import trt_int8_calibration_helper as int8_helper
 import time
-onnx_model_path = './model.onnx'
 
 
 class CNN(torch.nn.Module):
