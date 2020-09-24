@@ -96,7 +96,8 @@ You will see output like
 This output is run by Jetson Xavier.  
 Please be noted that int8 mode is only supported by specific GPU modules, e.g. Jetson Xavier , Tesla P4, etc. 
 
-TensorRT 6 and 7 have been released. Although the tutorial is run with TensorRT 5.0, it should be also compatible with TensorRT 6 and 7.
+TensorRT 7 have been released. According to some feedbacks, the code is tested well with TensorRT 5.0 and might have some problems with TensorRT 7.0.
+I will update this repo by doing a test with TensorRT 7 and making it compatible soon. 
 
 
 
