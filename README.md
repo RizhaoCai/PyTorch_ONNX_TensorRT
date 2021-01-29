@@ -1,6 +1,11 @@
 # PyTorch_ONNX_TensorRT
 A tutorial that show how could you build a TensorRT engine from a PyTorch Model with the help of ONNX. Please kindly star this project if you feel it helpful.
 
+# News
+A dynamic_shape_example (batch size dimension) is added.  
+Just run `python3 dynamic_shape_example.py`
+
+This example should be run on TensorRT 7.x. I find that this repo is a bit out-of-date since there are some API changes from TensorRT 5.0 to TensorRT 7.x. I will put sometime in a near future to make it compatible.
 
 # Environment
 0. Ubuntu 16.04 x86_64, CUDA 10.0
@@ -48,8 +53,8 @@ For full details, please check the [TensorRT-Installtation Guide](https://docs.n
 # Usage
 Please check the file 'pytorch_onnx_trt.ipynb'
 
-# News:
-Int8 demo updated! Just  
+## Int 8:
+To run the int-8 optimization
 ```python
 python3 trt_int8_demo.py
 ```  
